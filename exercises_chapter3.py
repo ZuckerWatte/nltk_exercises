@@ -192,23 +192,47 @@ import nltk, re, pprint
 # ############################
 # # 3.38 Hyphens at linebreaks
 # ############################
-from nltk import word_tokenize
-
-# A) Write a regular expression that identifies words that are hyphenated at a line-break.
-s = """My hus-
-band is fifty-
-six years old and my son-in-
-law is twenty-two."""
-nltk.re_show('(\w+-)+\n\w+', s)
-hypenated_linebreak_words = [''.join(w) for w in re.findall(r'(\w+-)*(\w+-)(\n\w+)',s)]
-print(hypenated_linebreak_words)
-
-# B) Use re.sub() to remove the \n character from these words.
-hypenated_words = [re.sub(r'\n', '', w) for w in hypenated_linebreak_words]
-print(hypenated_words)
-
-# C) How might you identify words that should not remain hyphenated once the newline is removed
-non_hyphen_words = [re.sub(r'-', '', w) for  w in hypenated_words if re.sub(r'-', '', w) in nltk.corpus.words.words()]
-normal_words = [w for  w in hypenated_words if re.sub(r'-', '', w) not in nltk.corpus.words.words()] + non_hyphen_words
-print(normal_words)
+# from nltk import word_tokenize
+#
+# # A) Write a regular expression that identifies words that are hyphenated at a line-break.
+# s = """My hus-
+# band is fifty-
+# six years old and my son-in-
+# law is twenty-two."""
+# nltk.re_show('(\w+-)+\n\w+', s)
+# hypenated_linebreak_words = [''.join(w) for w in re.findall(r'(\w+-)*(\w+-)(\n\w+)',s)]
+# print(hypenated_linebreak_words)
+#
+# # B) Use re.sub() to remove the \n character from these words.
+# hypenated_words = [re.sub(r'\n', '', w) for w in hypenated_linebreak_words]
+# print(hypenated_words)
+#
+# # C) How might you identify words that should not remain hyphenated once the newline is removed
+# non_hyphen_words = [re.sub(r'-', '', w) for  w in hypenated_words if re.sub(r'-', '', w) in nltk.corpus.words.words()]
+# normal_words = [w for  w in hypenated_words if re.sub(r'-', '', w) not in nltk.corpus.words.words()] + non_hyphen_words
+# print(normal_words)
 # ############################
+
+
+# #########################
+# # 3.39 Soundex Algorithm
+# #########################
+# #########################
+
+
+# ################################
+# # 3.41 Nested List Comprehension
+# ################################
+words = ['attribution', 'confabulation', 'elocution', 'sequoia', 'tenacious', 'unidirectional']
+vsequences = set()
+for word in words:
+    vowels = []
+    for char in word:
+        if char in 'aeiou':
+            vowels.append(char)
+    vsequences.add(''.join(vowels))
+print(sorted(vsequences))
+
+s = sorted(set([''.join([c for c in w if c in 'aeiou']) for w in words]))
+print(s)
+# ################################
