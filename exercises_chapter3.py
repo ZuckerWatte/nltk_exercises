@@ -48,24 +48,49 @@ import nltk, re, pprint
 # ###############################
 # # 3.20 Access Text from Website
 # ###############################
-from nltk import word_tokenize
-import urllib
-from bs4 import BeautifulSoup
-import ssl
-
-def weather(plz, city):
-    ssl._create_default_https_context = ssl._create_unverified_context
-    url = urllib.parse.quote(u'https://www.br.de/wettervorhersage/wetterprognose/{}/{}'.format(str(plz), city, end=' '), safe=':/')
-    html = urllib.request.urlopen(url).read().decode('utf8')
-    raw = BeautifulSoup(html, "html.parser").get_text()
-    tokens = word_tokenize(raw)
-    relevant_token = tokens.index("Aktuell")
-    tokens = tokens[relevant_token:relevant_token+15]
-    text = ' '.join(tokens)
-    text = text.replace(' :', ':')
-    print("\nDas Wetter in {}: \n{}\n".format(city, text, end=' '))
-
-weather(83395, 'Freilassing')
-weather(87700, 'Memmingen')
-weather(80333, 'München')
+# from nltk import word_tokenize
+# import urllib
+# from bs4 import BeautifulSoup
+# import ssl
+#
+# def weather(plz, city):
+#     ssl._create_default_https_context = ssl._create_unverified_context
+#     url = urllib.parse.quote(u'https://www.br.de/wettervorhersage/wetterprognose/{}/{}'.format(str(plz), city, end=' '), safe=':/')
+#     html = urllib.request.urlopen(url).read().decode('utf8')
+#     raw = BeautifulSoup(html, "html.parser").get_text()
+#     tokens = word_tokenize(raw)
+#     relevant_token = tokens.index("Aktuell")
+#     tokens = tokens[relevant_token:relevant_token+15]
+#     text = ' '.join(tokens)
+#     text = text.replace(' :', ':')
+#     print("\nDas Wetter in {}: \n{}\n".format(city, text, end=' '))
+#
+# weather(83395, 'Freilassing')
+# weather(87700, 'Memmingen')
+# weather(80333, 'München')
 # ###############################
+
+
+# ##########################
+# # 3.21 Find unknown Words
+# ##########################
+from nltk import word_tokenize
+# import urllib
+# from bs4 import BeautifulSoup
+# import ssl
+#
+# def unknown(url):
+#     ssl._create_default_https_context = ssl._create_unverified_context
+#     url = urllib.parse.quote(url, safe=':/')
+#     html = urllib.request.urlopen(url).read().decode('utf8')
+#     soup = BeautifulSoup(html, "html.parser")
+#     for script in soup(["script", "style"]):
+#         script.decompose()  # clean from script and style tags
+#     raw = soup.get_text()
+#     words = [w for w in re.findall(r'\w+', raw) if w.islower()]
+#     unknown_words = [u for u in words if u not in nltk.corpus.words.words()]
+#     print(unknown_words)
+
+#unknown('https://en.wikipedia.org/wiki/Endoskeleton')
+#unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html')
+# ##########################
