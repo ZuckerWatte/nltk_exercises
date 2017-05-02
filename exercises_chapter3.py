@@ -187,3 +187,28 @@ import nltk, re, pprint
 # nationality_adjs = ['African', 'American', 'Asian', 'Australian', 'Bavarian', 'Bulgarian', 'Canadian', 'Mexican', 'Romanian', 'South American']
 # adj_to_noun(nationality_adjs)
 # ####################################
+
+
+# ############################
+# # 3.38 Hyphens at linebreaks
+# ############################
+from nltk import word_tokenize
+
+# A) Write a regular expression that identifies words that are hyphenated at a line-break.
+s = """My hus-
+band is fifty-
+six years old and my son-in-
+law is twenty-two."""
+nltk.re_show('(\w+-)+\n\w+', s)
+hypenated_linebreak_words = [''.join(w) for w in re.findall(r'(\w+-)*(\w+-)(\n\w+)',s)]
+print(hypenated_linebreak_words)
+
+# B) Use re.sub() to remove the \n character from these words.
+hypenated_words = [re.sub(r'\n', '', w) for w in hypenated_linebreak_words]
+print(hypenated_words)
+
+# C) How might you identify words that should not remain hyphenated once the newline is removed
+non_hyphen_words = [re.sub(r'-', '', w) for  w in hypenated_words if re.sub(r'-', '', w) in nltk.corpus.words.words()]
+normal_words = [w for  w in hypenated_words if re.sub(r'-', '', w) not in nltk.corpus.words.words()] + non_hyphen_words
+print(normal_words)
+# ############################
