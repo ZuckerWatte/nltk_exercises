@@ -139,33 +139,51 @@ import nltk, re, pprint
 # #############################
 # # 3.30 Normalization/Stemming
 # #############################
-from nltk import word_tokenize
-porter = nltk.PorterStemmer()
-lancaster = nltk.LancasterStemmer()
-
-def porter_stemmer(str):
-    tokens = word_tokenize(str)
-    tokens = [t.lower() for t in tokens]
-    porter_tokens = [porter.stem(t) for t in tokens]
-    print(porter_tokens)
-
-def lancaster_stemmer(str):
-    tokens = word_tokenize(str)
-    tokens = [t.lower() for t in tokens]
-    lancaster_tokens = [lancaster.stem(t) for t in tokens]
-    print(lancaster_tokens)
-
-str = """Finally someone let me out of my cage
-Now time for me is nothing cause I'm counting no age
-Now I couldn't be there now you shouldn't be scared
-I'm good at repairs and I'm under each snare
-Intangible, I bet you didn't think so
-I command you to, panoramic view you
-Look I'll make it all manageable
-Pick and choose, sit and lose
-All you different crews
-Chicks and dudes, who you think is really kicking tunes"""
-
-porter_stemmer(str)
-lancaster_stemmer(str)
+# from nltk import word_tokenize
+# porter = nltk.PorterStemmer()
+# lancaster = nltk.LancasterStemmer()
+#
+# def porter_stemmer(str):
+#     tokens = word_tokenize(str)
+#     tokens = [t.lower() for t in tokens]
+#     porter_tokens = [porter.stem(t) for t in tokens]
+#     print(porter_tokens)
+#
+# def lancaster_stemmer(str):
+#     tokens = word_tokenize(str)
+#     tokens = [t.lower() for t in tokens]
+#     lancaster_tokens = [lancaster.stem(t) for t in tokens]
+#     print(lancaster_tokens)
+#
+# str = """Finally someone let me out of my cage
+# Now time for me is nothing cause I'm counting no age
+# Now I couldn't be there now you shouldn't be scared
+# I'm good at repairs and I'm under each snare
+# Intangible, I bet you didn't think so
+# I command you to, panoramic view you
+# Look I'll make it all manageable
+# Pick and choose, sit and lose
+# All you different crews
+# Chicks and dudes, who you think is really kicking tunes"""
+#
+# porter_stemmer(str)
+# lancaster_stemmer(str)
 # #############################
+
+
+# ####################################
+# # 3.34 Adjectives to Nouns Converter
+# ####################################
+# def adj_to_noun(adjs):
+#     adj_nouns = {}
+#     for adj in adjs:
+#         noun = re.sub(r'an$', 'a', adj)
+#         noun = re.sub(r'ian$', 'ia', noun)
+#         adj_nouns[adj] = noun
+#
+#     for adj, noun in adj_nouns.items():
+#         print(adj, ': ', noun)
+#
+# nationality_adjs = ['African', 'American', 'Asian', 'Australian', 'Bavarian', 'Bulgarian', 'Canadian', 'Mexican', 'Romanian', 'South American']
+# adj_to_noun(nationality_adjs)
+# ####################################
