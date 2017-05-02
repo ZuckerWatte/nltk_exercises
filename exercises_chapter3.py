@@ -49,15 +49,14 @@ import nltk, re, pprint
 # # 3.20 Access Text from Website
 # ###############################
 from nltk import word_tokenize
-from urllib import request
+import urllib
 from bs4 import BeautifulSoup
 import ssl
 
 def weather(plz, city):
     ssl._create_default_https_context = ssl._create_unverified_context
-    url = 'https://www.br.de/wettervorhersage/wetterprognose/{}/{}'.format(str(plz), city, end=' ')
-    print(url)
-    html = request.urlopen(url).read().decode('utf8')
+    url = urllib.parse.quote(u'https://www.br.de/wettervorhersage/wetterprognose/{}/{}'.format(str(plz), city, end=' '), safe=':/')
+    html = urllib.request.urlopen(url).read().decode('utf8')
     raw = BeautifulSoup(html, "html.parser").get_text()
     tokens = word_tokenize(raw)
     relevant_token = tokens.index("Aktuell")
@@ -68,5 +67,5 @@ def weather(plz, city):
 
 weather(83395, 'Freilassing')
 weather(87700, 'Memmingen')
-weather(80333, 'Muenchen')
+weather(80333, 'München')
 # ###############################
