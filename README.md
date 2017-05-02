@@ -1,1 +1,3 @@
 # nltk_exercises
+
+This repository contains my solutions to some of the practical language processing tasks in Book [Natural Language Processing with Python – Analyzing Text with the Natural Language Toolkit] (http://www.nltk.org/book/). It was written by the creators of the Natural Language Toolkit (NLTK) Steven Bird, Ewan Klein, and Edward Loper. The book is free and online available and is up to date for Python 3 and NLTK 3. 
