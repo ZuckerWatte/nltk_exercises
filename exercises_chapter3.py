@@ -74,7 +74,6 @@ import nltk, re, pprint
 # ##########################
 # # 3.21 Find unknown Words
 # ##########################
-from nltk import word_tokenize
 # import urllib
 # from bs4 import BeautifulSoup
 # import ssl
@@ -94,3 +93,44 @@ from nltk import word_tokenize
 #unknown('https://en.wikipedia.org/wiki/Endoskeleton')
 #unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html')
 # ##########################
+
+
+# ########################
+# # 3.24 hAck3r converter
+# ########################
+import textwrap
+from nltk import word_tokenize
+# e → 3, i → 1, o → 0, l → |, s → 5, . → 5w33t!, ate → 8
+
+def hacker(str, dic):
+    tokens = word_tokenize(str)
+    tokens = [t.lower() for t in tokens]
+    text = ' '.join(tokens)
+    for regex, replacement in dic.items():
+        text = re.sub(r'{}'.format(regex), replacement, text)
+    print(textwrap.fill(text, 50))
+
+str = """Yo listen up here's a story
+About a little guy that lives in a blue world
+And all day and all night and everything he sees
+Is just blue like him inside and outside
+Blue his house with a blue little window
+And a blue corvette
+And everything is blue for him and himself
+And everybody around
+'Cause he ain't got nobody to listen to
+I'm blue da ba dee da ba die ..."""
+
+dic = {
+    'e':'3',
+    'i':'1',
+    'o':'0',
+    'l':'|',
+    '\ss':' $',
+    's':'5',
+    '\.':'5w33t!',
+    'ate':'8'
+}
+
+hacker(str, dic)
+# ########################
