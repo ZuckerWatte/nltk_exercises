@@ -98,39 +98,74 @@ import nltk, re, pprint
 # ########################
 # # 3.24 hAck3r converter
 # ########################
-import textwrap
-from nltk import word_tokenize
-# e → 3, i → 1, o → 0, l → |, s → 5, . → 5w33t!, ate → 8
+# import textwrap
+# from nltk import word_tokenize
+# # e → 3, i → 1, o → 0, l → |, s → 5, . → 5w33t!, ate → 8
+#
+# def hacker(str, dic):
+#     tokens = word_tokenize(str)
+#     tokens = [t.lower() for t in tokens]
+#     text = ' '.join(tokens)
+#     for regex, replacement in dic.items():
+#         text = re.sub(r'{}'.format(regex), replacement, text)
+#     print(textwrap.fill(text, 50))
+#
+# str = """Yo listen up here's a story
+# About a little guy that lives in a blue world
+# And all day and all night and everything he sees
+# Is just blue like him inside and outside
+# Blue his house with a blue little window
+# And a blue corvette
+# And everything is blue for him and himself
+# And everybody around
+# 'Cause he ain't got nobody to listen to
+# I'm blue da ba dee da ba die ..."""
+#
+# dic = {
+#     'e':'3',
+#     'i':'1',
+#     'o':'0',
+#     'l':'|',
+#     '\ss':' $',
+#     's':'5',
+#     '\.':'5w33t!',
+#     'ate':'8'
+# }
+#
+# hacker(str, dic)
+# ########################
 
-def hacker(str, dic):
+
+# #############################
+# # 3.30 Normalization/Stemming
+# #############################
+from nltk import word_tokenize
+porter = nltk.PorterStemmer()
+lancaster = nltk.LancasterStemmer()
+
+def porter_stemmer(str):
     tokens = word_tokenize(str)
     tokens = [t.lower() for t in tokens]
-    text = ' '.join(tokens)
-    for regex, replacement in dic.items():
-        text = re.sub(r'{}'.format(regex), replacement, text)
-    print(textwrap.fill(text, 50))
+    porter_tokens = [porter.stem(t) for t in tokens]
+    print(porter_tokens)
 
-str = """Yo listen up here's a story
-About a little guy that lives in a blue world
-And all day and all night and everything he sees
-Is just blue like him inside and outside
-Blue his house with a blue little window
-And a blue corvette
-And everything is blue for him and himself
-And everybody around
-'Cause he ain't got nobody to listen to
-I'm blue da ba dee da ba die ..."""
+def lancaster_stemmer(str):
+    tokens = word_tokenize(str)
+    tokens = [t.lower() for t in tokens]
+    lancaster_tokens = [lancaster.stem(t) for t in tokens]
+    print(lancaster_tokens)
 
-dic = {
-    'e':'3',
-    'i':'1',
-    'o':'0',
-    'l':'|',
-    '\ss':' $',
-    's':'5',
-    '\.':'5w33t!',
-    'ate':'8'
-}
+str = """Finally someone let me out of my cage
+Now time for me is nothing cause I'm counting no age
+Now I couldn't be there now you shouldn't be scared
+I'm good at repairs and I'm under each snare
+Intangible, I bet you didn't think so
+I command you to, panoramic view you
+Look I'll make it all manageable
+Pick and choose, sit and lose
+All you different crews
+Chicks and dudes, who you think is really kicking tunes"""
 
-hacker(str, dic)
-# ########################
+porter_stemmer(str)
+lancaster_stemmer(str)
+# #############################
