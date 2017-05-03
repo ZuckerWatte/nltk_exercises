@@ -203,15 +203,16 @@ from nltk import word_tokenize
 # ############################
 # # 3.38 Hyphens at linebreaks
 # ############################
-# from nltk import word_tokenize
+from nltk import word_tokenize
 #
 # # A) Write a regular expression that identifies words that are hyphenated at a line-break.
 # s = """My hus-
 # band is fifty-
-# six years old and my son-in-
+# six years old -
+# my son-in-
 # law is twenty-two."""
-# nltk.re_show('(\w+-)+\n\w+', s)
-# hypenated_linebreak_words = [w for w in re.findall(r'(?:\w+-)+\n\w+',s)]
+# nltk.re_show('[\w+-]+\n\w+', s)
+# hypenated_linebreak_words = [w for w in re.findall(r'[\w+-]+\n\w+',s)]
 # print(hypenated_linebreak_words)
 #
 # # B) Use re.sub() to remove the \n character from these words.
@@ -291,3 +292,10 @@ from nltk import word_tokenize
 # s = sorted(set([''.join([c for c in w if c in 'aeiou']) for w in words]))
 # print(s)
 # ################################
+
+
+# ##########################
+# # 3.43 Language Identifier
+# ##########################
+
+# ##########################
