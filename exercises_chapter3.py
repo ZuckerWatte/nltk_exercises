@@ -228,48 +228,50 @@ from nltk import word_tokenize
 # #########################
 # # 3.39 Soundex Algorithm
 # #########################
-# from nltk import word_tokenize
-#
-# def soundex(str, dic_letters, dic_digits):
-#     soundex = ''
-#     tokens = word_tokenize(str)
-#     for token in tokens:
-#         first = token[0]
-#         for regex, replacement in dic_letters.items():
-#             token = re.sub(r'{}'.format(regex), replacement, token)
-#         for regex, replacement in dic_digits.items():
-#             token = re.sub(r'{}'.format(regex), replacement, token)
-#         token = re.sub(r'(?!^)[aeiouy]', '', token)
-#         token = re.sub(r'^.{1}', first, token)
-#         while len(token) < 4:
-#             token = token + '0'
-#         if len(token) > 4:
-#             token = token[:4]
-#         soundex += ' ' + token
-#     print(str)
-#     print(soundex)
-#
-# dic_letters = {
-#     '[hwHW]':'',
-#     '[bfpvBFPV]':'1',
-#     '[cgjkqsxzCGJKQSXZ]':'2',
-#     '[dtDT]':'3',
-#     '[lL]':'4',
-#     '[mnMN]':'5',
-#     '[rR]':'6'
-# }
-#
-# dic_digits = {
-#     '11+':'1',
-#     '22+':'2',
-#     '33+':'3',
-#     '44+':'4',
-#     '55+':'5',
-#     '66+':'6'
-# }
-#
-# str = "Robert Ashcraft and Rupert Tymczak and Rubin Pfister"
-# soundex(str, dic_letters, dic_digits)
+from nltk import word_tokenize
+
+
+def soundex(str, dic_letters, dic_digits):
+    soundex = ''
+    tokens = word_tokenize(str)
+    for token in tokens:
+        first = token[0]
+        for regex, replacement in dic_letters.items():
+            token = re.sub(r'{}'.format(regex), replacement, token)
+        for regex, replacement in dic_digits.items():
+            token = re.sub(r'{}'.format(regex), replacement, token)
+        token = re.sub(r'(?!^)[aeiouy]', '', token)
+        token = re.sub(r'^.', first, token)
+        while len(token) < 4:
+            token += '0'
+        if len(token) > 4:
+            token = token[:4]
+        soundex += ' ' + token
+    print(str)
+    print(soundex)
+
+
+dic_letters = {
+    '[hwHW]': '',
+    '[bfpvBFPV]': '1',
+    '[cgjkqsxzCGJKQSXZ]': '2',
+    '[dtDT]': '3',
+    '[lL]': '4',
+    '[mnMN]': '5',
+    '[rR]': '6'
+}
+
+dic_digits = {
+    '11+': '1',
+    '22+': '2',
+    '33+': '3',
+    '44+': '4',
+    '55+': '5',
+    '66+': '6'
+}
+
+str = "Robert Ashcraft and Rupert Tymczak and Rubin Pfister"
+soundex(str, dic_letters, dic_digits)
 # #########################
 
 
