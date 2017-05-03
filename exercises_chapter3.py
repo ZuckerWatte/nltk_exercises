@@ -203,7 +203,7 @@ from nltk import word_tokenize
 # ############################
 # # 3.38 Hyphens at linebreaks
 # ############################
-from nltk import word_tokenize
+# from nltk import word_tokenize
 #
 # # A) Write a regular expression that identifies words that are hyphenated at a line-break.
 # s = """My hus-
@@ -297,5 +297,39 @@ from nltk import word_tokenize
 # ##########################
 # # 3.43 Language Identifier
 # ##########################
+from nltk.corpus import udhr
+from nltk import word_tokenize
 
+def guess_language(samples):
+    final_languages = {}
+    for lang, str in samples.items():
+        tokens = word_tokenize(str)
+        languages = [l for l in udhr.fileids() if 'Latin1' in l]
+        languages_having_words = list()
+
+        for token in tokens:
+            for lang in languages:
+                if token in udhr.words(lang) or token.lower() in udhr.words(lang):
+                    languages_having_words.append(lang)
+        final_language = language_frequency(languages_having_words)
+        final_languages[final_language[0]] = str
+    return final_languages
+
+
+def language_frequency(list):
+    languages = nltk.Text(l.replace('-Latin1', '') for l in list)
+    most_common_language = nltk.FreqDist(languages).most_common(1)
+    return [l[0] for l in most_common_language]
+
+samples = {
+    'English':"Life is beautiful. We love Cats and dogs.",
+    'French':"La vie est belle. Nous aimons les chats et les chiens.",
+    'German':"Das Leben ist schön. Wie lieben Katzen und Hunde.",
+    'Spanish':"La vida es bella. Amamos los gatos y los perros.",
+    'Italian':"La vita è bella. Amiamo i gatti e i cani."
+}
+
+result = guess_language(samples)
+for lang, str in result.items():
+    print(str, '\n---> This is probably in', lang, '\n')
 # ##########################
