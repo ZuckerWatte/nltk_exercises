@@ -12,7 +12,7 @@ import nltk, re, pprint
 # s = "This IS a SiMpLe STRing"
 # nltk.re_show('[A-Z][a-z]*', s)
 
-# p[aeiou]{,2}t   // letter p followed by one or two vocals
+# p[aeiou]{,2}t   // letter p followed by one or two vocals ending with a t
 # s = "This IS a SiMpLe pt piet put puut puuut"
 # nltk.re_show('p[aeiou]{,2}t', s)
 
@@ -33,15 +33,17 @@ import nltk, re, pprint
 # ######################
 # # 3.7 String Regex
 # ######################
+from nltk import word_tokenize
 
 # A single determiner(assume that a, an, and the are the only determiners).
 # s = "The student has an open mind and a wild soul."
-# nltk.re_show('\s?(a|A|an|An|the|The)\s', s)
+# tokens = word_tokenize(s)
+# [nltk.re_show('^(a|A|an|An|the|The)$', t) for t in tokens]
+
 
 # An arithmetic expression using integers, addition, and multiplication, such as 2 * 3 + 8.
 # s = "The student didn't know how to calculate 3 + 4 or 45 * 2 + 12 or 3+3+3 or 444+5*9000 or 4*4."
-# nltk.re_show('(\d+(\s+)?(\*|\+)(\s+)?)+\d+(\s+)?', s)
-
+# nltk.re_show('(\d+(\s+)?(\*|\+)(\s+)?)+\d+', s)
 # ######################
 
 
@@ -74,24 +76,27 @@ import nltk, re, pprint
 # ##########################
 # # 3.21 Find unknown Words
 # ##########################
-# import urllib
-# from bs4 import BeautifulSoup
-# import ssl
-#
-# def unknown(url):
-#     ssl._create_default_https_context = ssl._create_unverified_context
-#     url = urllib.parse.quote(url, safe=':/')
-#     html = urllib.request.urlopen(url).read().decode('utf8')
-#     soup = BeautifulSoup(html, "html.parser")
-#     for script in soup(["script", "style"]):
-#         script.decompose()  # clean from script and style tags
-#     raw = soup.get_text()
-#     words = [w for w in re.findall(r'\w+', raw) if w.islower()]
-#     unknown_words = [u for u in words if u not in nltk.corpus.words.words()]
-#     print(unknown_words)
+import urllib
+from bs4 import BeautifulSoup
+import ssl
 
-#unknown('https://en.wikipedia.org/wiki/Endoskeleton')
-#unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html')
+def unknown(url):
+    ssl._create_default_https_context = ssl._create_unverified_context
+    url = urllib.parse.quote(url, safe=':/')
+    html = urllib.request.urlopen(url).read().decode('utf8')
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup(["script", "style"]):
+        script.decompose()  # clean from script and style tags
+    raw = soup.get_text()
+    words = [w for w in nltk.word_tokenize(raw) if w.islower()]
+    known_words = nltk.corpus.words.words()
+    unknown_words = [u for u in words if u not in known_words]
+    unknown_words = sorted(set(unknown_words))
+    return unknown_words
+
+print(unknown('https://en.wikipedia.org/wiki/Endoskeleton'))
+print(unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html'))
+print(unknown('http://haribo.de'))
 # ##########################
 
 
