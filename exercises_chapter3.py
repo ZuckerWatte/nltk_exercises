@@ -76,68 +76,69 @@ from nltk import word_tokenize
 # ##########################
 # # 3.21 Find unknown Words
 # ##########################
-import urllib
-from bs4 import BeautifulSoup
-import ssl
-
-def unknown(url):
-    ssl._create_default_https_context = ssl._create_unverified_context
-    url = urllib.parse.quote(url, safe=':/')
-    html = urllib.request.urlopen(url).read().decode('utf8')
-    soup = BeautifulSoup(html, "html.parser")
-    for script in soup(["script", "style"]):
-        script.decompose()  # clean from script and style tags
-    raw = soup.get_text()
-    words = [w for w in nltk.word_tokenize(raw) if re.search(r'^[a-zA-Z]+$', w)]
-    known_words = nltk.corpus.words.words()
-    unknown_words = [u.lower() for u in words if u not in known_words]
-    unknown_words = sorted(set(unknown_words))
-    return unknown_words
-
-print(unknown('https://en.wikipedia.org/wiki/Endoskeleton'))
-print(unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html'))
-print(unknown('http://haribo.de'))
+# import urllib
+# from bs4 import BeautifulSoup
+# import ssl
+#
+# def unknown(url):
+#     ssl._create_default_https_context = ssl._create_unverified_context
+#     url = urllib.parse.quote(url, safe=':/')
+#     html = urllib.request.urlopen(url).read().decode('utf8')
+#     soup = BeautifulSoup(html, "html.parser")
+#     for script in soup(["script", "style"]):
+#         script.decompose()  # clean from script and style tags
+#     raw = soup.get_text()
+#     words = [w for w in nltk.word_tokenize(raw) if re.search(r'^[a-zA-Z]+$', w)]
+#     known_words = nltk.corpus.words.words()
+#     unknown_words = [u.lower() for u in words if u not in known_words]
+#     unknown_words = sorted(set(unknown_words))
+#     return unknown_words
+#
+# print(unknown('https://en.wikipedia.org/wiki/Endoskeleton'))
+# print(unknown('http://www.azlyrics.com/lyrics/oasis/wonderwall.html'))
+# print(unknown('http://haribo.de'))
 # ##########################
 
 
 # ########################
 # # 3.24 hAck3r converter
 # ########################
-# import textwrap
-# from nltk import word_tokenize
+import textwrap
+from nltk import word_tokenize
 # # e → 3, i → 1, o → 0, l → |, s → 5, . → 5w33t!, ate → 8
 #
-# def hacker(str, dic):
-#     tokens = word_tokenize(str)
-#     tokens = [t.lower() for t in tokens]
-#     text = ' '.join(tokens)
-#     for regex, replacement in dic.items():
-#         text = re.sub(r'{}'.format(regex), replacement, text)
-#     print(textwrap.fill(text, 50))
-#
-# str = """Yo listen up here's a story
-# About a little guy that lives in a blue world
-# And all day and all night and everything he sees
-# Is just blue like him inside and outside
-# Blue his house with a blue little window
-# And a blue corvette
-# And everything is blue for him and himself
-# And everybody around
-# 'Cause he ain't got nobody to listen to
-# I'm blue da ba dee da ba die ..."""
-#
-# dic = {
-#     'e':'3',
-#     'i':'1',
-#     'o':'0',
-#     'l':'|',
-#     '\ss':' $',
-#     's':'5',
-#     '\.':'5w33t!',
-#     'ate':'8'
-# }
-#
-# hacker(str, dic)
+def hacker(str, dic):
+    tokens = word_tokenize(str)
+    tokens = [t.lower() for t in tokens]
+    text = ' '.join(tokens)
+    for regex, replacement in dic.items():
+        text = re.sub(r'{}'.format(regex), replacement, text)
+    print(textwrap.fill(text, 50))
+
+str = """Yo listen up here's a story
+About a little guy that lives in a blue world
+And all day and all night and everything he sees
+Is just blue like him inside and outside
+Blue his house with a blue little window
+And a blue corvette
+And everything is blue for him and himself
+And everybody around
+'Cause he ain't got nobody to listen to
+I'm blue da ba dee da ba die ..."""
+
+dic = {
+    'ate': '8',
+    'e':'3',
+    'i':'1',
+    'o':'0',
+    'l':'|',
+    '(^s|\ss)':' $',
+    's':'5',
+    '\.':'5w33t!'
+}
+
+hacker('Sorry for being late!', dic)
+hacker(str, dic)
 # ########################
 
 
