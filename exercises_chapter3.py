@@ -145,40 +145,40 @@ from nltk import word_tokenize
 # #############################
 # # 3.30 Normalization/Stemming
 # #############################
-from nltk import word_tokenize
-porter = nltk.PorterStemmer()
-lancaster = nltk.LancasterStemmer()
-
-def porter_stemmer(str):
-    tokens = word_tokenize(str)
-    tokens = [t.lower() for t in tokens]
-    porter_tokens = [porter.stem(t) for t in tokens]
-    return porter_tokens
-
-def lancaster_stemmer(str):
-    tokens = word_tokenize(str)
-    tokens = [t.lower() for t in tokens]
-    lancaster_tokens = [lancaster.stem(t) for t in tokens]
-    return lancaster_tokens
-
-str = """Finally someone let me out of my cage
-Now time for me is nothing cause I'm counting no age
-Now I couldn't be there now you shouldn't be scared
-I'm good at repairs and I'm under each snare
-Intangible, I bet you didn't think so
-I command you to, panoramic view you
-Look I'll make it all manageable
-Pick and choose, sit and lose
-All you different crews
-Chicks and dudes, who you think is really kicking tunes"""
-
-porter_tokens = porter_stemmer(str)
-lancaster_tokens = lancaster_stemmer(str)
-
-print('Porter\tLancaster\n')
-for i, p_t in enumerate(porter_tokens):
-    if p_t != lancaster_tokens[i]:
-        print(p_t, '\t', lancaster_tokens[i])
+# from nltk import word_tokenize
+# porter = nltk.PorterStemmer()
+# lancaster = nltk.LancasterStemmer()
+#
+# def porter_stemmer(str):
+#     tokens = word_tokenize(str)
+#     tokens = [t.lower() for t in tokens]
+#     porter_tokens = [porter.stem(t) for t in tokens]
+#     return porter_tokens
+#
+# def lancaster_stemmer(str):
+#     tokens = word_tokenize(str)
+#     tokens = [t.lower() for t in tokens]
+#     lancaster_tokens = [lancaster.stem(t) for t in tokens]
+#     return lancaster_tokens
+#
+# str = """Finally someone let me out of my cage
+# Now time for me is nothing cause I'm counting no age
+# Now I couldn't be there now you shouldn't be scared
+# I'm good at repairs and I'm under each snare
+# Intangible, I bet you didn't think so
+# I command you to, panoramic view you
+# Look I'll make it all manageable
+# Pick and choose, sit and lose
+# All you different crews
+# Chicks and dudes, who you think is really kicking tunes"""
+#
+# porter_tokens = porter_stemmer(str)
+# lancaster_tokens = lancaster_stemmer(str)
+#
+# print('Porter\tLancaster\n')
+# for i, p_t in enumerate(porter_tokens):
+#     if p_t != lancaster_tokens[i]:
+#         print(p_t, '\t', lancaster_tokens[i])
 # #############################
 
 
@@ -211,7 +211,7 @@ for i, p_t in enumerate(porter_tokens):
 # six years old and my son-in-
 # law is twenty-two."""
 # nltk.re_show('(\w+-)+\n\w+', s)
-# hypenated_linebreak_words = [''.join(w) for w in re.findall(r'(\w+-)*(\w+-)(\n\w+)',s)]
+# hypenated_linebreak_words = [w for w in re.findall(r'(?:\w+-)+\n\w+',s)]
 # print(hypenated_linebreak_words)
 #
 # # B) Use re.sub() to remove the \n character from these words.
