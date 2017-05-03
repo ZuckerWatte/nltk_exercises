@@ -88,9 +88,9 @@ def unknown(url):
     for script in soup(["script", "style"]):
         script.decompose()  # clean from script and style tags
     raw = soup.get_text()
-    words = [w for w in nltk.word_tokenize(raw) if w.islower()]
+    words = [w for w in nltk.word_tokenize(raw) if re.search(r'^[a-zA-Z]+$', w)]
     known_words = nltk.corpus.words.words()
-    unknown_words = [u for u in words if u not in known_words]
+    unknown_words = [u.lower() for u in words if u not in known_words]
     unknown_words = sorted(set(unknown_words))
     return unknown_words
 
