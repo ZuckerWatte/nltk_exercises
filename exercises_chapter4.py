@@ -30,3 +30,19 @@ import nltk, re, pprint
 # list = [4, 8, 2]
 # list_operations(list)
 # #######################
+
+
+# ###########################
+# # 4.10 Sort Words by Length
+# ###########################
+
+# def sort_words_by_length(words):
+#     word_length = [(len(word), word) for word in words]
+#     sorted_words = sorted(word_length)
+#     sorted_words = [word for (_, word) in sorted_words]
+#     return sorted_words
+#
+# words = ['Das', 'ist', 'das', 'Haus', 'vom', 'Nikolaus']
+# print(sort_words_by_length(words))
+
+# ###########################
