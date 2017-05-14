@@ -242,14 +242,24 @@ import nltk, re, pprint
 # 4.19 Sorting Synsets by Proximity
 ###################################
 
-from nltk.corpus import wordnet as wn
-
-def sort_synsets(target, synsets):
-    sorted_synsets = reversed(sorted([(target.path_similarity(syn), syn) for syn in synsets]))
-    return ', '.join([syn.name() for (_, syn) in sorted_synsets])
-
-target = wn.synset('right_whale.n.01')
-synsets = [wn.synset('minke_whale.n.01'), wn.synset('orca.n.01'), wn.synset('novel.n.01'), wn.synset('tortoise.n.01')]
-print('\n from nearest to most distant synset of {}: '.format("right_whale.n.01"), sort_synsets(target, synsets))
+# from nltk.corpus import wordnet as wn
+#
+# def sort_synsets(target, synsets):
+#     sorted_synsets = reversed(sorted([(target.path_similarity(syn), syn) for syn in synsets]))
+#     return ', '.join([syn.name() for (_, syn) in sorted_synsets])
+#
+# target = wn.synset('right_whale.n.01')
+# synsets = [wn.synset('minke_whale.n.01'), wn.synset('orca.n.01'), wn.synset('novel.n.01'), wn.synset('tortoise.n.01')]
+# print('\n from nearest to most distant synset of {}: '.format("right_whale.n.01"), sort_synsets(target, synsets))
 
 ###################################
+
+
+#############################################
+# 4.21 Difference between Text and Vocabulary
+#############################################
+
+from nltk.book import *
+print(list(w for w in set(text3[:50]).difference(set(text3[50:100]))))
+
+#############################################
