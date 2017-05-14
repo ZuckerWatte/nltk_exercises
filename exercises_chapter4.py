@@ -191,50 +191,48 @@ import nltk, re, pprint
 ########################
 # 4.18 Indexing Lexicon
 ########################
-# Write code to print out an index for a lexicon, allowing someone to look up words according to their meanings
-# (or pronunciations; whatever properties are contained in lexical entries).
 
-from nltk.corpus import wordnet as wn
-
-def insert(trie, key, value):
-    if key:
-        first, rest = key[0], key[1:]
-        if first not in trie:
-            trie[first] = {}
-        insert(trie[first], rest, value)
-    else:
-        if 'value' in trie:
-            trie['value'].append(value)
-        else:
-            trie['value'] = [value]
-
-
-def built_trie(contents, trie):
-    for word, synonyms in contents:
-        for synonym in synonyms:
-            insert(trie, word, synonym)
-    return trie
-
-def lookup_word_in_lexicon(trie, word):
-    if word[0] in trie:
-        if 'value' in trie[word[0]]:
-            return ', '.join(trie[word[0]]['value'])
-        else:
-            if len(word) > 1:
-                return lookup_word_in_lexicon(trie[word[0]], word[1:])
-            else:
-                return "Word wasn't found in the lexicon."
-    else:
-        return "Word wasn't found in the lexicon."
-
-
-
-synsets = wn.all_synsets('n')
-synsets_synonyms = [(syn.lemma_names()[0], syn.lemma_names()[1:]) for syn in synsets if syn.lemma_names()[1:]]
-trie = {}
-synonym_lexicon = built_trie(synsets_synonyms, trie)
-
-search = input('Search synonyms for: ')
-print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_lexicon, search))))
+# from nltk.corpus import wordnet as wn
+#
+# def insert(trie, key, value):
+#     if key:
+#         first, rest = key[0], key[1:]
+#         if first not in trie:
+#             trie[first] = {}
+#         insert(trie[first], rest, value)
+#     else:
+#         if 'value' in trie:
+#             trie['value'].append(value)
+#         else:
+#             trie['value'] = [value]
+#
+#
+# def built_trie(contents, trie):
+#     for word, synonyms in contents:
+#         for synonym in synonyms:
+#             insert(trie, word, synonym)
+#     return trie
+#
+# def lookup_word_in_lexicon(trie, word):
+#     if word[0] in trie:
+#         if 'value' in trie[word[0]]:
+#             return ', '.join(trie[word[0]]['value'])
+#         else:
+#             if len(word) > 1:
+#                 return lookup_word_in_lexicon(trie[word[0]], word[1:])
+#             else:
+#                 return "Word wasn't found in the lexicon."
+#     else:
+#         return "Word wasn't found in the lexicon."
+#
+#
+#
+# synsets = wn.all_synsets('n')
+# synsets_synonyms = [(syn.lemma_names()[0], syn.lemma_names()[1:]) for syn in synsets if syn.lemma_names()[1:]]
+# trie = {}
+# synonym_lexicon = built_trie(synsets_synonyms, trie)
+#
+# search = input('Search synonyms for: ')
+# print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_lexicon, search))))
 
 #######################################
