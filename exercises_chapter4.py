@@ -259,7 +259,60 @@ import nltk, re, pprint
 # 4.21 Difference between Text and Vocabulary
 #############################################
 
-from nltk.book import *
-print(list(w for w in set(text3[:50]).difference(set(text3[50:100]))))
+#from nltk.book import *
+#print(list(w for w in set(text3[:50]).difference(set(text3[50:100]))))
 
+#############################################
+
+
+#############################################
+# 4.23 Difference between Text and Vocabulary
+#############################################
+
+def insert(trie, key, value):
+    if key:
+        first, rest = key[0], key[1:]
+        if first not in trie:
+            trie[first] = {}
+        insert(trie[first], rest, value)
+    else:
+        trie['value'] = value
+
+def lookup(trie, key):
+    current = key[0]
+    if len(key) > 1:
+        rest, next = key[1:], key[1]
+        if current in trie:
+            if 'value' in trie[current] and next not in trie[current]:
+                return [trie[current]['value'], '']
+            else:
+                return lookup(trie[current], rest)
+        else:
+            return ["no results", '']
+    else:
+        if current in trie and 'value' in trie[current]:
+            return [trie[current]['value'], '']
+        else:
+            return check_prefix(trie, current)
+
+def check_prefix(trie, key, str=''):
+    if key == 'value':
+        return [trie['value'], '({})'.format(str[1:])]
+    elif key in trie and len(trie[key].keys()) == 1:
+        str += key
+        next = list(trie[key].keys())[0]
+        return check_prefix(trie[key], next, str)
+    else:
+        return ["no result", '']
+
+
+trie = {}
+insert(trie, 'cat', 'sweetest animal ever')
+insert(trie, 'catherine', 'sweetest girl ever')
+insert(trie, 'catering', 'sweetest service ever')
+insert(trie, 'chocolate', 'sweetest sweets ever')
+
+search = input('\nsearch dictionary for: ')
+result = lookup(trie, search)
+print('{}{}: {}'.format(search, result[1], result[0]))
 #############################################
