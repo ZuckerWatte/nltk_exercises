@@ -186,43 +186,43 @@ import nltk, re, pprint
 # 4.18 Indexing Lexicon
 ########################
 
-from nltk.corpus import wordnet as wn
-
-def insert(trie, key, value):
-    if key:
-        first, rest = key[0], key[1:]
-        if first not in trie:
-            trie[first] = {}
-        insert(trie[first], rest, value)
-    else:
-        if 'value' in trie:
-            trie['value'].append(value)
-        else:
-            trie['value'] = [value]
-
-def built_trie(contents, trie):
-    for word, synonyms in contents:
-        for synonym in synonyms:
-            insert(trie, word, synonym)
-    return trie
-
-def lookup_word_in_lexicon(trie, word):
-    if word:
-        current, rest = word[0], word[1:]
-        if current in trie:
-            return lookup_word_in_lexicon(trie[current], rest)
-        return "Word wasn't found in the lexicon."
-    else:
-        return ', '.join(trie['value'])
-
-
-synsets = wn.all_synsets('n')
-synsets_synonyms = [(syn.lemma_names()[0], syn.lemma_names()[1:]) for syn in synsets if syn.lemma_names()[1:]]
-trie = {}
-synonym_lexicon = built_trie(synsets_synonyms, trie)
-
-search = input('Search synonyms for: ')
-print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_lexicon, search))))
+# from nltk.corpus import wordnet as wn
+#
+# def insert(trie, key, value):
+#     if key:
+#         first, rest = key[0], key[1:]
+#         if first not in trie:
+#             trie[first] = {}
+#         insert(trie[first], rest, value)
+#     else:
+#         if 'value' in trie:
+#             trie['value'].append(value)
+#         else:
+#             trie['value'] = [value]
+#
+# def built_trie(contents, trie):
+#     for word, synonyms in contents:
+#         for synonym in synonyms:
+#             insert(trie, word, synonym)
+#     return trie
+#
+# def lookup_word_in_lexicon(trie, word):
+#     if word:
+#         current, rest = word[0], word[1:]
+#         if current in trie:
+#             return lookup_word_in_lexicon(trie[current], rest)
+#         return "Word wasn't found in the lexicon."
+#     else:
+#         return ', '.join(trie['value'])
+#
+#
+# synsets = wn.all_synsets('n')
+# synsets_synonyms = [(syn.lemma_names()[0], syn.lemma_names()[1:]) for syn in synsets if syn.lemma_names()[1:]]
+# trie = {}
+# synonym_lexicon = built_trie(synsets_synonyms, trie)
+#
+# search = input('Search synonyms for: ')
+# print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_lexicon, search))))
 
 #######################################
 
@@ -234,7 +234,7 @@ print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_l
 # from nltk.corpus import wordnet as wn
 #
 # def sort_synsets(target, synsets):
-#     sorted_synsets = reversed(sorted([(target.path_similarity(syn), syn) for syn in synsets]))
+#     sorted_synsets = sorted([(target.shortest_path_distance(syn), syn) for syn in synsets])
 #     return ', '.join([syn.name() for (_, syn) in sorted_synsets])
 #
 # target = wn.synset('right_whale.n.01')
@@ -258,52 +258,46 @@ print('Synonyms for {} are: {}'.format(search, (lookup_word_in_lexicon(synonym_l
 # 4.23 Difference between Text and Vocabulary
 #############################################
 
-# def insert(trie, key, value):
-#     if key:
-#         first, rest = key[0], key[1:]
-#         if first not in trie:
-#             trie[first] = {}
-#         insert(trie[first], rest, value)
-#     else:
-#         trie['value'] = value
-#
-# def lookup(trie, key):
-#     current = key[0]
-#     if len(key) > 1:
-#         rest, next = key[1:], key[1]
-#         if current in trie:
-#             if 'value' in trie[current] and next not in trie[current]:
-#                 return [trie[current]['value'], '']
-#             else:
-#                 return lookup(trie[current], rest)
-#         else:
-#             return ["no results", '']
-#     else:
-#         if current in trie and 'value' in trie[current]:
-#             return [trie[current]['value'], '']
-#         else:
-#             return check_prefix(trie, current)
-#
-# def check_prefix(trie, key, str=''):
-#     if key == 'value':
-#         return [trie['value'], '({})'.format(str[1:])]
-#     elif key in trie and len(trie[key].keys()) == 1:
-#         str += key
-#         next = list(trie[key].keys())[0]
-#         return check_prefix(trie[key], next, str)
-#     else:
-#         return ["no result", '']
-#
-#
-# trie = {}
-# insert(trie, 'cat', 'sweetest animal ever')
-# insert(trie, 'catherine', 'sweetest girl ever')
-# insert(trie, 'catering', 'sweetest service ever')
-# insert(trie, 'chocolate', 'sweetest sweets ever')
-#
-# search = input('\nsearch dictionary for: ')
-# result = lookup(trie, search)
-# print('{}{}: {}'.format(search, result[1], result[0]))
+def insert(trie, key, value):
+    if key:
+        first, rest = key[0], key[1:]
+        if first not in trie:
+            trie[first] = {}
+        insert(trie[first], rest, value)
+    else:
+        trie['value'] = value
+
+def lookup(trie, key):
+    current = key[0]
+    if len(key)>1:
+        rest = key[1:]
+        if current not in trie:
+            return ["no results", '']
+        return lookup(trie[current], rest)
+    else:
+        if current in trie and 'value' in trie[current]:
+           return [trie[current]['value'], '']
+        return check_prefix(trie, current)
+
+def check_prefix(trie, key, str=''):
+    if key == 'value':
+        return [trie['value'], '({})'.format(str[1:])]
+    elif key in trie and len(trie[key].keys()) == 1:
+        str += key
+        next = list(trie[key].keys())[0]
+        return check_prefix(trie[key], next, str)
+    return ["no result", '']
+
+
+trie = {}
+insert(trie, 'cat', 'sweetest animal ever')
+insert(trie, 'catherine', 'sweetest girl ever')
+insert(trie, 'catering', 'sweetest service ever')
+insert(trie, 'chocolate', 'sweetest sweets ever')
+
+search = input('\nsearch dictionary for: ')
+result = lookup(trie, search)
+print('{}{}: {}'.format(search, result[1], result[0]))
 #############################################
 
 
