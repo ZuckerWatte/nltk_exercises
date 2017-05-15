@@ -258,46 +258,77 @@ import nltk, re, pprint
 # 4.23 Difference between Text and Vocabulary
 #############################################
 
-def insert(trie, key, value):
-    if key:
-        first, rest = key[0], key[1:]
-        if first not in trie:
-            trie[first] = {}
-        insert(trie[first], rest, value)
-    else:
-        trie['value'] = value
-
-def lookup(trie, key):
-    current = key[0]
-    if len(key)>1:
-        rest = key[1:]
-        if current not in trie:
-            return ["no results", '']
-        return lookup(trie[current], rest)
-    else:
-        if current in trie and 'value' in trie[current]:
-           return [trie[current]['value'], '']
-        return check_prefix(trie, current)
-
-def check_prefix(trie, key, str=''):
-    if key == 'value':
-        return [trie['value'], '({})'.format(str[1:])]
-    elif key in trie and len(trie[key].keys()) == 1:
-        str += key
-        next = list(trie[key].keys())[0]
-        return check_prefix(trie[key], next, str)
-    return ["no result", '']
-
-
-trie = {}
-insert(trie, 'cat', 'sweetest animal ever')
-insert(trie, 'catherine', 'sweetest girl ever')
-insert(trie, 'catering', 'sweetest service ever')
-insert(trie, 'chocolate', 'sweetest sweets ever')
-
-search = input('\nsearch dictionary for: ')
-result = lookup(trie, search)
-print('{}{}: {}'.format(search, result[1], result[0]))
+# def insert(trie, key, value):
+#     if key:
+#         first, rest = key[0], key[1:]
+#         if first not in trie:
+#             trie[first] = {}
+#         insert(trie[first], rest, value)
+#     else:
+#         trie['value'] = value
+#
+# def lookup(trie, key):
+#     current = key[0]
+#     if len(key)>1:
+#         rest = key[1:]
+#         if current not in trie:
+#             return ["no results", '']
+#         return lookup(trie[current], rest)
+#     else:
+#         if current in trie and 'value' in trie[current]:
+#            return [trie[current]['value'], '']
+#         return check_prefix(trie, current)
+#
+# def check_prefix(trie, key, str=''):
+#     if key == 'value':
+#         return [trie['value'], '({})'.format(str[1:])]
+#     elif key in trie and len(trie[key].keys()) == 1:
+#         str += key
+#         next = list(trie[key].keys())[0]
+#         return check_prefix(trie[key], next, str)
+#     return ["no result", '']
+#
+#
+# trie = {}
+# insert(trie, 'cat', 'sweetest animal ever')
+# insert(trie, 'catherine', 'sweetest girl ever')
+# insert(trie, 'catering', 'sweetest service ever')
+# insert(trie, 'chocolate', 'sweetest sweets ever')
+#
+# search = input('\nsearch dictionary for: ')
+# result = lookup(trie, search)
+# print('{}{}: {}'.format(search, result[1], result[0]))
 #############################################
 
 
+####################
+# 4.31 Justify Text
+####################
+
+import textwrap, re
+
+def justify_text(str, width):
+    sents = textwrap.wrap(str, width=width)
+    justified_text = [add_blanks(s, width) for s in sents]
+    return justified_text
+
+def add_blanks(s, width):
+    s = s.replace(' ', '  ', width-len(s))
+    if len(s) < width:
+        return add_blanks(s, width)
+    return s
+
+str = """Yo listen up here's a story
+About a little guy that lives in a blue world
+And all day and all night and everything he sees
+Is just blue like him inside and outside
+Blue his house with a blue little window
+And a blue corvette
+And everything is blue for him and himself
+And everybody around
+'Cause he ain't got nobody to listen to
+I'm blue da ba dee da ba die ..."""
+
+justified_text = justify_text(str, 50)
+pprint.pprint(justified_text)
+####################
