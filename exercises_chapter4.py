@@ -32,20 +32,18 @@ import nltk, re, pprint
 # #######################
 
 
-# ###########################
-# # 4.10 Sort Words by Length
-# ###########################
+###########################
+# 4.10 Sort Words by Length
+###########################
 
-# def sort_words_by_length(words):
-#     word_length = [(len(word), word) for word in words]
-#     sorted_words = sorted(word_length)
-#     sorted_words = [word for (_, word) in sorted_words]
-#     return sorted_words
-#
-# words = ['Das', 'ist', 'das', 'Haus', 'vom', 'Nikolaus']
-# print(sort_words_by_length(words))
+def sort_words_by_length(words):
+    words.sort(key=len)
+    return words
 
-# ###########################
+words = ['Das', 'ist', 'das', 'Haus', 'vom', 'Nikolaus']
+print(sort_words_by_length(words))
+
+###########################
 
 
 # #######################################
@@ -269,50 +267,51 @@ import nltk, re, pprint
 # 4.23 Difference between Text and Vocabulary
 #############################################
 
-def insert(trie, key, value):
-    if key:
-        first, rest = key[0], key[1:]
-        if first not in trie:
-            trie[first] = {}
-        insert(trie[first], rest, value)
-    else:
-        trie['value'] = value
-
-def lookup(trie, key):
-    current = key[0]
-    if len(key) > 1:
-        rest, next = key[1:], key[1]
-        if current in trie:
-            if 'value' in trie[current] and next not in trie[current]:
-                return [trie[current]['value'], '']
-            else:
-                return lookup(trie[current], rest)
-        else:
-            return ["no results", '']
-    else:
-        if current in trie and 'value' in trie[current]:
-            return [trie[current]['value'], '']
-        else:
-            return check_prefix(trie, current)
-
-def check_prefix(trie, key, str=''):
-    if key == 'value':
-        return [trie['value'], '({})'.format(str[1:])]
-    elif key in trie and len(trie[key].keys()) == 1:
-        str += key
-        next = list(trie[key].keys())[0]
-        return check_prefix(trie[key], next, str)
-    else:
-        return ["no result", '']
-
-
-trie = {}
-insert(trie, 'cat', 'sweetest animal ever')
-insert(trie, 'catherine', 'sweetest girl ever')
-insert(trie, 'catering', 'sweetest service ever')
-insert(trie, 'chocolate', 'sweetest sweets ever')
-
-search = input('\nsearch dictionary for: ')
-result = lookup(trie, search)
-print('{}{}: {}'.format(search, result[1], result[0]))
+# def insert(trie, key, value):
+#     if key:
+#         first, rest = key[0], key[1:]
+#         if first not in trie:
+#             trie[first] = {}
+#         insert(trie[first], rest, value)
+#     else:
+#         trie['value'] = value
+#
+# def lookup(trie, key):
+#     current = key[0]
+#     if len(key) > 1:
+#         rest, next = key[1:], key[1]
+#         if current in trie:
+#             if 'value' in trie[current] and next not in trie[current]:
+#                 return [trie[current]['value'], '']
+#             else:
+#                 return lookup(trie[current], rest)
+#         else:
+#             return ["no results", '']
+#     else:
+#         if current in trie and 'value' in trie[current]:
+#             return [trie[current]['value'], '']
+#         else:
+#             return check_prefix(trie, current)
+#
+# def check_prefix(trie, key, str=''):
+#     if key == 'value':
+#         return [trie['value'], '({})'.format(str[1:])]
+#     elif key in trie and len(trie[key].keys()) == 1:
+#         str += key
+#         next = list(trie[key].keys())[0]
+#         return check_prefix(trie[key], next, str)
+#     else:
+#         return ["no result", '']
+#
+#
+# trie = {}
+# insert(trie, 'cat', 'sweetest animal ever')
+# insert(trie, 'catherine', 'sweetest girl ever')
+# insert(trie, 'catering', 'sweetest service ever')
+# insert(trie, 'chocolate', 'sweetest sweets ever')
+#
+# search = input('\nsearch dictionary for: ')
+# result = lookup(trie, search)
+# print('{}{}: {}'.format(search, result[1], result[0]))
 #############################################
+
