@@ -35,13 +35,13 @@ import nltk, re, pprint
 ###########################
 # 4.10 Sort Words by Length
 ###########################
-
-def sort_words_by_length(words):
-    words.sort(key=len)
-    return words
-
-words = ['Das', 'ist', 'das', 'Haus', 'vom', 'Nikolaus']
-print(sort_words_by_length(words))
+#
+# def sort_words_by_length(words):
+#     words.sort(key=len)
+#     return words
+#
+# words = ['Das', 'ist', 'das', 'Haus', 'vom', 'Nikolaus']
+# print(sort_words_by_length(words))
 
 ###########################
 
@@ -52,22 +52,20 @@ print(sort_words_by_length(words))
 
 # Write code to initialize a two-dimensional array of sets called word_vowels and process a list of words,
 # adding each word to word_vowels[l][v] where l is the length of the word and v is the number of vowels it contains.
-#
-# def word_length_vowels(words):
-#     word_length_vowels = [(len(word), len(re.sub(r'[^aeiou]', '', word)), word) for word in words]
-#     vowel_arrs = [[] for _ in range(max(x[1] for x in word_length_vowels)+1)]
-#     num_of_length = len(set([x[0] for x in word_length_vowels]))
-#     word_vowels = [vowel_arrs for _ in range(num_of_length)]
-#     word_vowels.append(vowel_arrs)
-#
-#     for length, vowels, word in word_length_vowels:
-#         word_vowels[length][vowels].append(word)
-#     return word_vowels
-#
-#
-# words = nltk.corpus.brown.words(categories=['hobbies'])
-# print(words[100:115])
-# print(word_length_vowels(words[100:115]))
+
+def word_length_vowels(words):
+    word_length_vowels = [(len(word), len(re.sub(r'[^aeiou]', '', word)), word) for word in words]
+    word_vowels = [[[] for _ in range(max([x[1] for x in word_length_vowels])+1)] for _ in range(max(x[0] for x in word_length_vowels)+1)]
+
+    for length, vowels, word in word_length_vowels:
+        word_vowels[length][vowels].append(word)
+    return word_vowels
+
+words = nltk.corpus.brown.words(categories=['hobbies'])
+word_vowels = word_length_vowels(words[100:115])
+
+# print word of length 5, that contan 2 vowels
+print(arr[5][2])
 
 # #######################################
 
