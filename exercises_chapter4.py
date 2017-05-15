@@ -305,30 +305,52 @@ import nltk, re, pprint
 # 4.31 Justify Text
 ####################
 
-import textwrap, re
-
-def justify_text(str, width):
-    sents = textwrap.wrap(str, width=width)
-    justified_text = [add_blanks(s, width) for s in sents]
-    return justified_text
-
-def add_blanks(s, width):
-    s = s.replace(' ', '  ', width-len(s))
-    if len(s) < width:
-        return add_blanks(s, width)
-    return s
-
-str = """Yo listen up here's a story
-About a little guy that lives in a blue world
-And all day and all night and everything he sees
-Is just blue like him inside and outside
-Blue his house with a blue little window
-And a blue corvette
-And everything is blue for him and himself
-And everybody around
-'Cause he ain't got nobody to listen to
-I'm blue da ba dee da ba die ..."""
-
-justified_text = justify_text(str, 50)
-pprint.pprint(justified_text)
+# import textwrap, re
+#
+# def justify_text(str, width):
+#     sents = textwrap.wrap(str, width=width)
+#     justified_text = [add_blanks(s, width) for s in sents]
+#     return justified_text
+#
+# def add_blanks(s, width):
+#     s = s.replace(' ', '  ', width-len(s))
+#     if len(s) < width:
+#         return add_blanks(s, width)
+#     return s
+#
+# str = """Yo listen up here's a story
+# About a little guy that lives in a blue world
+# And all day and all night and everything he sees
+# Is just blue like him inside and outside
+# Blue his house with a blue little window
+# And a blue corvette
+# And everything is blue for him and himself
+# And everybody around
+# 'Cause he ain't got nobody to listen to
+# I'm blue da ba dee da ba die ..."""
+#
+# justified_text = justify_text(str, 50)
+# pprint.pprint(justified_text)
 ####################
+
+
+############################################
+# 4.32 Sentences with highest Word Frequency
+############################################
+
+from nltk.corpus import brown
+
+def word_freq_in_sents(words, sents, n):
+    total_freqdist = nltk.FreqDist([w.lower() for w in words])
+    summed_word_freq = [(sum([total_freqdist[w] for w in s]), i) for (i,s) in enumerate(sents)]
+    highest_ranked_sentences = sorted(sorted(summed_word_freq)[-n:], key=lambda x: x[1])
+    return highest_ranked_sentences
+
+words_news = brown.words(categories='news')
+sents_news = brown.sents(categories='news')
+
+highest_ranked_sentences = word_freq_in_sents(words_news, sents_news, 3)
+for sent in highest_ranked_sentences:
+    print('\nTotal Word Frequency: {}\n{}'.format(sent[0], ' '.join(sents_news[sent[1]])))
+
+############################################
