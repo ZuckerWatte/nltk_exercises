@@ -338,19 +338,103 @@ import nltk, re, pprint
 # 4.32 Sentences with highest Word Frequency
 ############################################
 
-from nltk.corpus import brown
-
-def word_freq_in_sents(words, sents, n):
-    total_freqdist = nltk.FreqDist([w.lower() for w in words])
-    summed_word_freq = [(sum([total_freqdist[w] for w in s]), i) for (i,s) in enumerate(sents)]
-    highest_ranked_sentences = sorted(sorted(summed_word_freq)[-n:], key=lambda x: x[1])
-    return highest_ranked_sentences
-
-words_news = brown.words(categories='news')
-sents_news = brown.sents(categories='news')
-
-highest_ranked_sentences = word_freq_in_sents(words_news, sents_news, 3)
-for sent in highest_ranked_sentences:
-    print('\nTotal Word Frequency: {}\n{}'.format(sent[0], ' '.join(sents_news[sent[1]])))
+# from nltk.corpus import brown
+#
+# def word_freq_in_sents(words, sents, n):
+#     total_freqdist = nltk.FreqDist([w.lower() for w in words])
+#     summed_word_freq = [(sum([total_freqdist[w] for w in s]), i) for (i,s) in enumerate(sents)]
+#     highest_ranked_sentences = sorted(sorted(summed_word_freq)[-n:], key=lambda x: x[1])
+#     return highest_ranked_sentences
+#
+# words_news = brown.words(categories='news')
+# sents_news = brown.sents(categories='news')
+#
+# highest_ranked_sentences = word_freq_in_sents(words_news, sents_news, 3)
+# for sent in highest_ranked_sentences:
+#     print('\nTotal Word Frequency: {}\n{}'.format(sent[0], ' '.join(sents_news[sent[1]])))
 
 ############################################
+
+
+#######################
+# 4.35 n x n Crosswords
+#######################
+
+# write a program to implement a brute-force algorithm for discovering word squares,
+# a kind of n × n crossword in which the entry in the nth row is the same as the entry
+# in the nth column.
+
+from nltk.corpus import words,brown
+import random
+
+
+def build_crossword(n, len_dict):
+    word = random.choice(len_dict[n])
+    crossword = [word]
+    trie = build_trie(len_dict[len(word)])
+    crossword = find_words(n, crossword, trie, 0)
+    if not crossword:
+        return build_crossword(n, len_dict)
+    return crossword
+
+def find_words(n, crossword, trie, c):
+    if c < 10:
+        c += 1
+    else:
+        return False
+    for i in range(1,n):
+        char = crossword[0][i]
+        for j in range(1, i):
+            char += crossword[j][i]
+        next_word = lookup(trie, char)
+        if not next_word:
+            return find_words(n, [crossword[0]], trie, c)
+        crossword.append(next_word)
+    return crossword
+
+def build_len_dict(corpus):
+    len_dict = {}
+    len_words = [(len(w), w) for w in corpus]
+    for length, word in len_words:
+        if length in len_dict:
+            len_dict[length].append(word)
+        else:
+            len_dict[length] = [word]
+    return len_dict
+
+def build_trie(words):
+    trie = {}
+    for w in words:
+        insert(trie, w, w)
+    return trie
+
+def insert(trie, key, value):
+    if key:
+        first, rest = key[0], key[1:]
+        if first not in trie:
+            trie[first] = {}
+        insert(trie[first], rest, value)
+    else:
+        trie['word'] = value
+
+def lookup(trie, word):
+    if word:
+        current, rest = word[0], word[1:]
+        if current in trie:
+            return lookup(trie[current], rest)
+        return False
+    else:
+        if not 'word' in trie:
+            next = random.choice(list(trie.keys()))
+            return lookup(trie, next)
+        return trie['word']
+
+
+brown_words = [w.lower() for w in list(set(brown.words())) if len(w) <= 10 and re.search(r'^[a-zA-Z]+$', w)]
+words_words = [w.lower() for w in list(set(words.words())) if len(w) <= 10 and re.search(r'^[a-zA-Z]+$', w)]
+corpus = list(set().union(*[set(brown_words), set(words_words)]))
+len_dict = build_len_dict(corpus)
+
+pprint.pprint(build_crossword(5, len_dict), width=5)
+
+#######################
