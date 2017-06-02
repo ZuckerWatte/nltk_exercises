@@ -41,21 +41,34 @@ from nltk.corpus import brown
 # ###############################################
 
 brown_tagged_words = brown.tagged_words()
-singular_nouns = [n[0] for n in brown_tagged_words if n[1] == 'NN']
-plural_nouns = [n[0] for n in brown_tagged_words if n[1] == 'NNS']
 
-cfdist = nltk.ConditionalFreqDist()
+# 1)  Nouns that are more often uses in plural than singular
+# singular_nouns = [n[0] for n in brown_tagged_words if n[1] == 'NN']
+# plural_nouns = [n[0] for n in brown_tagged_words if n[1] == 'NNS']
+#
+# cfdist = nltk.ConditionalFreqDist()
+#
+# for n in singular_nouns:
+#     condition = 'singular'
+#     cfdist[condition][n] += 1
+#
+# for n in plural_nouns:
+#     condition = 'plural'
+#     cfdist[condition][n[0:-1]] += 1
+#
+# more_plural = list(n for n in set(singular_nouns + plural_nouns) if cfdist['plural'][n] > cfdist['singular'][n])
+# tuples = list((m+'s', cfdist['plural'][m], m, cfdist['singular'][m]) for m in more_plural)
+# print(sorted(tuples, key=lambda m:m[3], reverse=True))
 
-for n in singular_nouns:
-    condition = 'singular'
-    cfdist[condition][n] += 1
+# 2) Word with the highest number of distinct tags
+#
+# cfdist = nltk.ConditionalFreqDist(set(brown_tagged_words))
+#
+# word_with_most_tags= sorted(((w[0], len(cfdist[w[0]].most_common())) for w in set(brown_tagged_words)), key=lambda x:x[1], reverse=True)[0]
+# print(cfdist[word_with_most_tags[0]].most_common())
+# nltk.help.brown_tagset()
 
-for n in plural_nouns:
-    condition = 'plural'
-    cfdist[condition][n[0:-1]] += 1
-
-more_plural = list(n for n in set(singular_nouns + plural_nouns) if cfdist['plural'][n] > cfdist['singular'][n])
-tuples = list((m+'s', cfdist['plural'][m], m, cfdist['singular'][m]) for m in more_plural)
-print(sorted(tuples, key=lambda m:m[3], reverse=True))
+# 3) 
+# 4)
 
 # ###############################################
