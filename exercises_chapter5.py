@@ -68,7 +68,15 @@ brown_tagged_words = brown.tagged_words()
 # print(cfdist[word_with_most_tags[0]].most_common())
 # nltk.help.brown_tagset()
 
-# 3) 
-# 4)
+# 3) Tag Frequency
+# fdist = nltk.FreqDist(tag for (word, tag) in brown_tagged_words)
+# print(fdist.most_common(20))
+
+# 4) Tags that preceede nouns
+
+# bigrams = nltk.bigrams(brown_tagged_words)
+# noun_bigrams = [b for b in bigrams if b[1][1].startswith('NN')]
+# fdist = nltk.FreqDist(t[1] for t, _ in noun_bigrams)
+# print(fdist.most_common())
 
 # ###############################################
